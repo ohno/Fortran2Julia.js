@@ -1,0 +1,77 @@
+<html lang="en">
+
+<head>
+  <!-- meta -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Fortran2Julia.js</title>
+  <meta name="description" content="Converting scientific notation to decimal notation.">
+  <!-- <meta property="og:image" content="./assets/img/OGP.png" /> -->
+  <link rel="icon" href="./assets/img/favicon.svg" type="image/svg+xml"/>  
+  <link rel="stylesheet" href="./assets/css/reset.css">
+  <link rel="stylesheet" href="./assets/css/style.css">
+  <!-- Fortran2Julia.js -->
+  <script src="./assets/js/Fortran2Julia.js"></script>  
+  <script src="./assets/js/onload.js"></script>
+  <script src="./assets/js/copy.js"></script>
+</head>
+
+<body>
+
+  <!-- Header -->
+  <header>
+    <a class="logo" href="https://github.com/ohno/Fortran2Julia.js/">
+      <img src ="./assets/img/logo.svg"/>
+      <h1>Fortran2Julia<span>.js</span></h1>
+    </a>
+    <a class="menu" href="https://github.com/ohno/Fortran2Julia.js/">
+      <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24"><path class="heart" stroke="#BF3989" stroke-width="2" fill="#BF3989" fill-opacity="0" d="M13.35 20.13c-.76.69-1.93.69-2.69-.01l-.11-.1C5.3 15.27 1.87 12.16 2 8.28c.06-1.7.93-3.33 2.34-4.29 2.64-1.8 5.9-.96 7.66 1.1 1.76-2.06 5.02-2.91 7.66-1.1 1.41.96 2.28 2.59 2.34 4.29.14 3.88-3.3 6.99-8.55 11.76l-.1.09z"/></svg>
+    </a>
+  </header>
+
+  <!-- Background -->
+  <canvas id="canvas"></canvas>
+  <link rel="stylesheet" href="./assets/css/canvas.css">
+  <script src="./assets/js/particles-nodes-canvas.js"></script>
+
+  <!-- Main -->
+  <main>
+
+    <section class="textareas">
+      <svg id="arrow" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000"><path d="M0,0 L0,24 12,12"/></svg>
+      <div class="textareas__block--left">
+        <h2 class="textareas__block__header">
+          <img src ="./assets/img/fortran.svg"/>
+          Fortran
+        </h2>
+        <textarea class="textareas__block__main" id="input" cols="30" rows="10" onInput="document.getElementById('output').value=Fortran2Julia(this.value)"></textarea>
+      </div>
+      <div class="textareas__block--right" id="right">
+        <h2 class="textareas__block__header">
+          <img src ="./assets/img/julia.svg"/> 
+          Julia
+        </h2>
+        <!-- https://developer.mozilla.org/ja/docs/Mozilla/Add-ons/WebExtensions/Interact_with_the_clipboard -->
+        <textarea class="textareas__block__main" id="output" cols="30" rows="10" readonly  onClick="copy()"></textarea>
+        <a class="textareas__copy-button" onClick="copy()">
+          <svg id="copybutton" fill="#24292F" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px"><path d="M0 0h24v24H0z" fill="none"/><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+        </a>
+      </div>
+    </section>
+    
+    <section class="description">
+      Fortran2Julia.js is a tool for converting Fortran programs to Julia programs using <a target="_blank" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_expressions/Groups_and_backreferences">Groups and backreferences</a>. The copy button is implemented using <a target="_blank" href="https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Interact_with_the_clipboard">Interact with the clipboard</a>. The background is based on <a target="_blank" href="https://codepen.io/indieklem/pen/mdJONg">Particles & Nodes Canvas</a>. You can <a target="_blank" href="https://github.com/ohno/Fortran2Julia.js/">send me issues or give me a star</a>🌟.
+    </section>
+
+  </section>  
+
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <a href="https://github.com/ohno/">© 2023 Shuhei Ohno</a>
+  </footer>	
+
+</body>
+
+</html>

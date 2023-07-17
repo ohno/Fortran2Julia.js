@@ -1,0 +1,18 @@
+html,
+body {
+  display: flex;
+  align-items: stretch;
+  align-content: stretch;
+  width: 100%;
+  height: 100%;
+  margin:0;
+  padding:0;
+  background: #fff;
+}
+
+#canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  margin: 0 auto;
+}
