@@ -72,7 +72,7 @@ function Fortran2Julia(input) {
   }
 
   // print *,xxx to println(xxx)
-  for (const match of output.matchAll(/print\s\*\s*\,\s*(?<text>.*)/mg)) {
+  for (const match of output.matchAll(/print\s*\*\s*\,\s*(?<text>.*)/mg)) {
     let before = match[0];
     let after  = `println(${match.groups.text})`;
     console.log(before, "to", after);
