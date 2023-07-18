@@ -124,9 +124,11 @@ function Fortran2Julia(input) {
   // do to for
   for (const match of output.matchAll(/do\s*(?<counter>[a-zA-Z]?[a-zA-Z]?)\s*=\s*(?<range>[\d,]+)/mg)) {
     let before = match[0];
-    let after  = `for ${match.groups.counter} in ${match.groups.range.replace(',',':')}`;
+    let after  = `for ${match.groups.counter} = ${match.groups.range.replace(',',':')}`;
     // x,y,z to x:z:y
-    // if () {}
+    for (const mmatch of match.groups.range.matchAll(/(?<x>\d+),(?<y>\d+),(?<z>\d+)/mg)) {
+      after = `for ${match.groups.counter} = ${mmatch.groups.x}:${mmatch.groups.z}:${mmatch.groups.y}`;
+    }
     console.log(before, "to", after);
     output = output.replace(before, after);
   }
