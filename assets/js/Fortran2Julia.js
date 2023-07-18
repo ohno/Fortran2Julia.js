@@ -68,6 +68,11 @@ function Fortran2Julia(input) {
       let after  = `${match.groups.text}`;
       if (after.includes('=')) {
         // complex
+        if (type==='complex') {
+          for (const mmatch of after.matchAll(/\((?<real>.+),(?<imag>.+)\)/mg)) {
+            after = after.replace(mmatch[0], `${mmatch.groups.real} + im * ${mmatch.groups.imag}`);
+          }
+        }
         // array `,` escape
         for (const mmatch of after.matchAll(/\((?<dim>.+?)\)/mg)) {
           after = after.replace(mmatch[0], ` = zeros\(${mmatch.groups.dim.replaceAll(',','___')}\)`);
