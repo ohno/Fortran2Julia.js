@@ -26,6 +26,10 @@ program main
   g = 2d0 * (1d0 + 2d0)
   print *, a, b, c, d, e, f, g, p, q
 
+  ! array
+  u(1,2) = 0.0
+  v(1,2) = 1d0
+
   ! do
   do i=1,2
     print *, i

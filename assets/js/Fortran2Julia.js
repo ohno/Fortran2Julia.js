@@ -1,4 +1,5 @@
 function Fortran2Julia(input) {
+  var arrays = [];
   let output = input
   // ========== Please rewrite following ==========
 
@@ -53,6 +54,7 @@ function Fortran2Julia(input) {
         let after  = `${match.groups.text}`;
         let mmatch = match.groups.info.match(/\(.*\)/mg)
         let variables = after.split(',');
+        arrays = arrays.concat(variables.map(function(elem){return elem.trim();}));
         variables = variables.map(function(elem){return elem.trim() + ` = zeros${mmatch[0].replaceAll(',','___')}`;});
         after = variables.join('; ');
         console.log(before, "to", after);
@@ -74,7 +76,8 @@ function Fortran2Julia(input) {
           }
         }
         // array `,` escape
-        for (const mmatch of after.matchAll(/\((?<dim>.+?)\)/mg)) {
+        for (const mmatch of after.matchAll(/(?<symbol>[^\s,:]+?)\s*\((?<dim>.+?)\)/mg)) {
+          arrays.push(mmatch.groups.symbol.trim());
           after = after.replace(mmatch[0], ` = zeros\(${mmatch.groups.dim.replaceAll(',','___')}\)`);
         }
         // non-array
@@ -98,6 +101,16 @@ function Fortran2Julia(input) {
     output = output.replace(before, after);
   }
 
+  // A() to A[]
+  for (const arr of arrays) {
+    for (const match of output.matchAll(new RegExp(`${arr}\\((?<dim>.+?)\\)`, "mg"))) {
+      let before = match[0];
+      let after  = `${arr}[${match.groups.dim}]`;
+      console.log(before, "to", after);
+      output = output.replace(before, after);
+    }
+  }
+
   // 1d0 to 1e0
   for (const match of output.matchAll(/(?<mantissa>[+-]?\d+(?:\.\d+)?)[EDed]+(?<exponent>[+-]?\d+)/mg)) {
     let before = match[0];
@@ -116,6 +129,7 @@ function Fortran2Julia(input) {
     for (const mmatch of output.matchAll(new RegExp(`end.*function.*${match.groups.name}[\(\)]*`, "mg"))) {
       let before = mmatch[0];
       let after  = `end; ${match.groups.name}\(\)`;
+      console.log(before, "to", after);
       output = output.replace(before, after);
     }
   }
