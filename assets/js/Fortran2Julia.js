@@ -69,7 +69,7 @@ function Fortran2Julia(input) {
       if (after.includes('=')) {
         // complex
         if (type==='complex') {
-          for (const mmatch of after.matchAll(/\((?<real>.+),(?<imag>.+)\)/mg)) {
+          for (const mmatch of after.matchAll(/\((?<real>.+?),(?<imag>.+?)\)/mg)) {
             after = after.replace(mmatch[0], `${mmatch.groups.real} + im * ${mmatch.groups.imag}`);
           }
         }
