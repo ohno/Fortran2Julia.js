@@ -7,9 +7,10 @@ program main
   implicit none
   integer :: i
   integer :: j
-  integer:: a, b, c = 5, d, e, f, g
+  integer :: a, b, c = 5, d(2), e(2,3), f, g
   integer, parameter :: p = 8, q = 9
   double precision :: x = 1.0, y = 2.0
+  double precision, dimension(2,2) :: u, v
 
   ! hello
   print *, "hello"

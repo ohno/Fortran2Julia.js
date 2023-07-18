@@ -45,24 +45,52 @@ function Fortran2Julia(input) {
     output = output.replace(before, after);
   }
 
+  // dimension
+  for (const type of ['integer', 'real', 'double precision', 'complex', 'logical', 'character']) {
+    for (const match of output.matchAll(new RegExp(`${type}(?<info>.*)\s*::\s*(?<text>.*)`, "mg"))) {
+      if (match.groups.info.includes('dimension')) {
+        let before = match[0];
+        let after  = `${match.groups.text}`;
+        let mmatch = match.groups.info.match(/\(.*\)/mg)
+        let variables = after.split(',');
+        variables = variables.map(function(elem){return elem.trim() + ` = zeros${mmatch[0].replaceAll(',','___')}`;});
+        after = variables.join('; ');
+        console.log(before, "to", after);
+        output = output.replace(before, after);
+      }
+    }
+  }
+
   // remove types
   for (const type of ['integer', 'real', 'double precision', 'complex', 'logical', 'character']) {
-    for (const match of output.matchAll(new RegExp(`${type}.*::\s*(?<text>.*)`, "mg"))) {
+    for (const match of output.matchAll(new RegExp(`${type}(?<info>.*)\s*::\s*(?<text>.*)`, "mg"))) {
       let before = match[0];
       let after  = `${match.groups.text}`;
       if (after.includes('=')) {
-        if (after.includes(',')) {
-          let variables = match.groups.text.split(',');
-          variables = variables.filter(function(elem){return elem.includes('=');});
-          variables = variables.map(function(elem){return elem.trim();});
-          after = variables.join('; ');
+        // complex
+        // array `,` escape
+        for (const mmatch of after.matchAll(/\((?<dim>.+?)\)/mg)) {
+          after = after.replace(mmatch[0], ` = zeros\(${mmatch.groups.dim.replaceAll(',','___')}\)`);
         }
+        // non-array
+        let variables = after.split(',');
+        variables = variables.filter(function(elem){return elem.includes('=');});
+        variables = variables.map(function(elem){return elem.trim();});
+        after = variables.join('; ');
       } else {
         after = "";
       }
       console.log(before, "to", after);
       output = output.replace(before, after);
     }
+  }
+
+  // array `,` unescape
+  for (const match of output.matchAll(/\_\_\_/mg)) {
+    let before = match[0];
+    let after = ',';
+    console.log(before, "to", after);
+    output = output.replace(before, after);
   }
 
   // 1d0 to 1e0
