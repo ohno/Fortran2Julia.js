@@ -25,10 +25,14 @@ function Fortran2Julia(input) {
   for (const match of output.matchAll(/!(?<str>.)/mg)) {
     let before = match[0];
     let after = `#${match.groups.str}`;
-    // != to !=
-    if (`${match.groups.str}` == "=") {
-      after = match[0];
-    }
+    console.log(before, "to", after);
+    output = output.replace(before, after);
+  }
+
+  // ! to #
+  for (const match of output.matchAll(/\/\=/mg)) {
+    let before = match[0];
+    let after = `!=`;
     console.log(before, "to", after);
     output = output.replace(before, after);
   }
@@ -87,6 +91,14 @@ function Fortran2Julia(input) {
   for (const match of output.matchAll(/if(?<text>.*)then/mg)) {
     let before = match[0];
     let after  = `if ${match.groups.text}`;
+    console.log(before, "to", after);
+    output = output.replace(before, after);
+  }
+
+  // if xxx then to if xxx
+  for (const match of output.matchAll(/else\s*if/mg)) {
+    let before = match[0];
+    let after  = "elseif";
     console.log(before, "to", after);
     output = output.replace(before, after);
   }

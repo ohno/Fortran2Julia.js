@@ -1,5 +1,4 @@
-window.onload = function() {
-document.getElementById('input').value =`! Test Cases
+! Test Cases
 
 program main
 
@@ -39,6 +38,4 @@ program main
     print *, 'i /= 0 .and. i /= 1'
   end if
 
-end program main`;
-document.getElementById('output').value = Fortran2Julia(document.getElementById('input').value);
-}
+end program main
