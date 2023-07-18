@@ -80,9 +80,9 @@ function Fortran2Julia(input) {
     console.log(before, "to", after);
     output = output.replace(before, after);
     // end program xxx to end; xxx()
-    for (const mmatch of output.matchAll(new RegExp(`end.*${match.groups.name}`, "mg"))) {
+    for (const mmatch of output.matchAll(new RegExp(`end.*function.*${match.groups.name}[\(\)]*`, "mg"))) {
       let before = mmatch[0];
-      let after  = `end\n\n${match.groups.name}\(\)`;
+      let after  = `end; ${match.groups.name}\(\)`;
       output = output.replace(before, after);
     }
   }
@@ -95,7 +95,7 @@ function Fortran2Julia(input) {
     output = output.replace(before, after);
   }
 
-  // if xxx then to if xxx
+  // else if to elseif
   for (const match of output.matchAll(/else\s*if/mg)) {
     let before = match[0];
     let after  = "elseif";
@@ -104,11 +104,13 @@ function Fortran2Julia(input) {
   }
 
   // end xxx to end
-  for (const match of output.matchAll(/end.*[!\n]?/mg)) {
-    let before = match[0];
-    let after  = "end\n";
-    console.log(before, "to", after);
-    output = output.replace(before, after);
+  for (const statement of ['do', 'if', 'program', 'subroutin', 'function']) {
+    for (const match of output.matchAll(new RegExp(`end.*${statement}`, "mg"))) {
+      let before = match[0];
+      let after  = "end";
+      console.log(before, "to", after);
+      output = output.replace(before, after);
+    }
   }
 
   // print *,xxx to println(xxx)
