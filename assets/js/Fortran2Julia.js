@@ -169,7 +169,7 @@ function Fortran2Julia(input) {
   }
 
   // do to for
-  for (const match of output.matchAll(/do\s*(?<counter>[a-zA-Z]?[a-zA-Z]?)\s*=\s*(?<range>[\d,]+)/mg)) {
+  for (const match of output.matchAll(/do\s*(?<counter>.+?)\s*=\s*(?<range>[\d,]+)/mg)) {
     let before = match[0];
     let after  = `for ${match.groups.counter} = ${match.groups.range.replace(',',':')}`;
     // x,y,z to x:z:y
