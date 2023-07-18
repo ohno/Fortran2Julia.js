@@ -21,14 +21,6 @@ function Fortran2Julia(input) {
     output = output.replace(before, after);
   }
 
-  // 1d0 to 1e0
-  for (const match of output.matchAll(/(?<mantissa>[+-]?\d+(?:\.\d+)?)[EDed]+(?<exponent>[+-]?\d+)/mg)) {
-    let before = match[0];
-    let after  = `${match.groups.mantissa}e${match.groups.exponent}`;
-    console.log(before, "to", after);
-    output = output.replace(before, after);
-  }
-
   // ! to #
   for (const match of output.matchAll(/!(?<str>.)/mg)) {
     let before = match[0];
@@ -37,6 +29,42 @@ function Fortran2Julia(input) {
     if (`${match.groups.str}` == "=") {
       after = match[0];
     }
+    console.log(before, "to", after);
+    output = output.replace(before, after);
+  }
+
+  // remove implicit none
+  for (const match of output.matchAll(/implicit\s*none/mg)) {
+    let before = match[0];
+    let after  = "";
+    console.log(before, "to", after);
+    output = output.replace(before, after);
+  }
+
+  // remove types
+  for (const type of ['integer', 'real', 'double precision', 'complex', 'logical', 'character']) {
+    for (const match of output.matchAll(new RegExp(`${type}.*::\s*(?<text>.*)`, "mg"))) {
+      let before = match[0];
+      let after  = `${match.groups.text}`;
+      if (after.includes('=')) {
+        if (after.includes(',')) {
+          let variables = match.groups.text.split(',');
+          variables = variables.filter(function(elem){return elem.includes('=');});
+          variables = variables.map(function(elem){return elem.trim();});
+          after = variables.join('; ');
+        }
+      } else {
+        after = "";
+      }
+      console.log(before, "to", after);
+      output = output.replace(before, after);
+    }
+  }
+
+  // 1d0 to 1e0
+  for (const match of output.matchAll(/(?<mantissa>[+-]?\d+(?:\.\d+)?)[EDed]+(?<exponent>[+-]?\d+)/mg)) {
+    let before = match[0];
+    let after  = `${match.groups.mantissa}e${match.groups.exponent}`;
     console.log(before, "to", after);
     output = output.replace(before, after);
   }
