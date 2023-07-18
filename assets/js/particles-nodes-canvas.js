@@ -1,3 +1,7 @@
+// Particles & Nodes Canvas
+// https://codepen.io/indieklem/pen/mdJONg
+// This file is forked from ./particles-nodes-canvas/dist/script.js
+
 window.requestAnimFrame = function()
 	{
 		return (
