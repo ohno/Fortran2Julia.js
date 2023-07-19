@@ -78,7 +78,7 @@ function Fortran2Julia(input) {
         // array `,` escape
         for (const mmatch of after.matchAll(/(?<symbol>[^\s,:]+?)\s*\((?<dim>.+?)\)/mg)) {
           arrays.push(mmatch.groups.symbol.trim());
-          after = after.replace(mmatch[0], ` = zeros\(${mmatch.groups.dim.replaceAll(',','___')}\)`);
+          after = after.replace(mmatch[0], `${mmatch.groups.symbol.trim()} = zeros\(${mmatch.groups.dim.replaceAll(',','___')}\)`);
         }
         // non-array
         let variables = after.split(',');
