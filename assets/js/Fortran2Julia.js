@@ -68,7 +68,7 @@ function Fortran2Julia(input) {
     for (const match of output.matchAll(new RegExp(`${type}(?<info>.*)\s*::\s*(?<text>.*)`, "mg"))) {
       let before = match[0];
       let after  = `${match.groups.text}`;
-      if (after.includes('=')) {
+      if (after.includes('=') || after.includes('(')) {
         // complex
         if (type==='complex') {
           for (const mmatch of after.matchAll(/\((?<real>.+?),(?<imag>.+?)\)/mg)) {
