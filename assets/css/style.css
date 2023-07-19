@@ -309,10 +309,12 @@ footer {
 .textareas__block--left > .textareas__block__main {
   /* border-left: 1px solid #c6cdd5; */
   border-right: 1px solid #c6cdd5;
+  border-radius: 0 0 0 10px;
 }
 
 .textareas__block--right > .textareas__block__main {
   /* border-right: 1px solid #c6cdd5; */
+  border-radius: 0 0 10px 0;
 }
 
 .textareas__block__main:hover,
