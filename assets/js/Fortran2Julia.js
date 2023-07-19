@@ -169,12 +169,12 @@ function Fortran2Julia(input) {
   }
 
   // do to for
-  for (const match of output.matchAll(/do\s*(?<counter>.+?)\s*=\s*(?<range>[\d,]+)/mg)) {
+  for (const match of output.matchAll(/do\s+(?<counter>[^\s]+)\s*=\s*(?<range>.+)(?<end>[\n\!\#]+?)/mg)) {
     let before = match[0];
-    let after  = `for ${match.groups.counter} = ${match.groups.range.replace(',',':')}`;
+    let after  = `for ${match.groups.counter} = ${match.groups.range.replace(',',':')}${match.groups.end}`;
     // x,y,z to x:z:y
-    for (const mmatch of match.groups.range.matchAll(/(?<x>\d+),(?<y>\d+),(?<z>\d+)/mg)) {
-      after = `for ${match.groups.counter} = ${mmatch.groups.x}:${mmatch.groups.z}:${mmatch.groups.y}`;
+    for (const mmatch of match.groups.range.matchAll(/(?<x>.+),(?<y>.+),(?<z>.+)/mg)) {
+      after = `for ${match.groups.counter} = ${mmatch.groups.x}:${mmatch.groups.z}:${mmatch.groups.y}${match.groups.end}`;
     }
     console.log(before, "to", after);
     output = output.replace(before, after);
