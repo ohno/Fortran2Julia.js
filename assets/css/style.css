@@ -317,6 +317,16 @@ footer {
   border-radius: 0 0 10px 0;
 }
 
+@media screen and (max-width:840px) {
+  .textareas__block--left > .textareas__block__main {
+    border-radius: 0 0 0 0;
+  }
+  
+  .textareas__block--right > .textareas__block__main {
+    border-radius: 0 0 10px 10px;
+  }  
+}
+
 .textareas__block__main:hover,
 .textareas__block__main:focus {
   /* border: 1px solid #a6adb5; */
