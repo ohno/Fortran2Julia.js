@@ -42,7 +42,8 @@ function Fortran2Julia(input) {
       [/\.le\./mg, "<="],
       [/\.ge\./mg, ">="],
       [/\.gt\./mg, ">"],
-      [/\.lt\./mg, "<"]
+      [/\.lt\./mg, "<"],
+      [/exit/mg, "break"]
     ]){
     for (const match of output.matchAll(rule[0])) {
       let before = match[0];
