@@ -30,12 +30,26 @@ function Fortran2Julia(input) {
     output = output.replace(before, after);
   }
 
-  // ! to #
-  for (const match of output.matchAll(/\/\=/mg)) {
-    let before = match[0];
-    let after = `!=`;
-    console.log(before, "to", after);
-    output = output.replace(before, after);
+  // https://gist.github.com/rafaqz/fede683a3e853f36c9b367471fde2f56
+  for (const rule of [
+      [/\.true\./mg,  "true"],
+      [/\.false\./mg, "false"],
+      [/\.or\./mg, "||"],
+      [/\.and\./mg, "&&"],
+      [/\.not\./mg, "!"],
+      [/\.eq\./mg, "=="],
+      [/\.ne\./mg, "!="],
+      [/\.le\./mg, "<="],
+      [/\.ge\./mg, ">="],
+      [/\.gt\./mg, ">"],
+      [/\.lt\./mg, "<"]
+    ]){
+    for (const match of output.matchAll(rule[0])) {
+      let before = match[0];
+      let after = rule[1];
+      console.log(before, "to", after);
+      output = output.replace(before, after);
+    }
   }
 
   // remove implicit none
